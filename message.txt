@@ -1,0 +1,3 @@
+Fill out this text file with the email you want to send
+hello my name is peter
+test test test
