@@ -2,7 +2,7 @@ from Google import Create_Service
 from gmail_stuff import *
 from calendar_stuff import *
 
-services = ['google.com', 'teams.microsoft.com', 'zoom.us']
+services = ['google.com', 'teams.microsoft.com', 'zoom.us', 'bongo-ca.youseeu.com']
 
 gmailService = gmailAuthenticate()
 calService = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
@@ -26,6 +26,8 @@ with open('message.txt', 'r') as f:
 
 for event in tomorrowEvents:
     link = False
+    # print(event['status'], event['attendees'])
+
     for s in services:
         try:
             if (s in event['description']):
@@ -39,7 +41,23 @@ for event in tomorrowEvents:
 
     #teacher didn't include a link
     if (not link):
-        attendees = event['attendees']
-        for i in attendees:
-            if (i['email'] != myEmail):
-                sendMessage(gmailService, i['email'], subject, message)
+        try:
+            attendees = event['attendees']
+            for i in attendees:
+                if (i['email'] != myEmail):
+                    if (i['responseStatus'] == 'accepted'):
+                        # sendMessage(gmailService, i['email'], subject, message)
+                        print('email sent to', i['email'])
+        except:
+            print('no attendees')
+
+
+# sendMessage(
+#     gmailService,
+#     'derpygamesrep@gmail.com',
+#     'Here is a test email',
+#     'test content')
+
+# event = tomorrowEvents[0]
+# print(event.keys())
+# print(event['status'])
